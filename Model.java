@@ -32,7 +32,7 @@ public class Model
     // and are used by the View to display it
     GameObj ball;                // The ball
     GameObj[] bricks;            // The bricks
-    static GameObj bat;                 // The bat
+    GameObj bat;                 // The bat
     int score = 0;               // The score
 
     // variables that control the game 
