@@ -2,6 +2,10 @@
 comment0.target=Main
 comment1.params=window
 comment1.target=void\ start(javafx.stage.Stage)
-comment2.params=args
-comment2.target=void\ main(java.lang.String[])
-numComments=3
+comment2.params=
+comment2.target=java.lang.String\ readHighScore()
+comment3.params=data
+comment3.target=void\ writeHighScore(java.lang.String)
+comment4.params=args
+comment4.target=void\ main(java.lang.String[])
+numComments=5

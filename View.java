@@ -30,6 +30,8 @@ public class View implements EventHandler<KeyEvent>{
     
     static Rectangle lossPanel;
     static Label lossLabel;
+    
+    static Label highScoreLabel;
 
     // The other parts of the model-view-controller setup
     Controller controller;
@@ -112,6 +114,14 @@ public class View implements EventHandler<KeyEvent>{
         b.setOnAction(this::restartGame);
         pane.getChildren().add(b);
         
+        highScoreLabel = new Label();
+        highScoreLabel.setText("High score");
+        highScoreLabel.setTranslateX(200);
+        highScoreLabel.setTranslateY(200);
+        highScoreLabel.setTextFill(Color.WHITE);
+        highScoreLabel.setVisible(false);
+        pane.getChildren().add(highScoreLabel);
+        
         
         // Make a new JavaFX Scene, containing the complete GUI
         Scene scene = new Scene(pane);   
@@ -142,6 +152,7 @@ public class View implements EventHandler<KeyEvent>{
         for(GameObj brick : Model.bricks){
             brick.visible = true;
         }
+        highScoreLabel.setVisible(false);
     }
     // Event handler for key presses - it just passes the event to the controller
     public void handle(KeyEvent event)
@@ -179,6 +190,7 @@ public class View implements EventHandler<KeyEvent>{
             
             // update the score
             infoText.setText("BreakOut: Score = " + score);
+            highScoreLabel.setText("Highscore: " + Main.readHighScore());
         }
     }
 

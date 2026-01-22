@@ -266,15 +266,22 @@ public class Model
     }
     
     public synchronized void showWinScreen(){
+        int scoreInt = Integer.parseInt(Main.readHighScore());
+        if(score > scoreInt){
+            Main.writeHighScore(""+score);
+        }
         View.r.setVisible(true);
         View.l.setVisible(true);
         View.b.setVisible(true);
+        View.highScoreLabel.setVisible(true);
     }
     
     public synchronized void showLossScreen(){
+        //Main.writeHighScore("200");
         View.lossPanel.setVisible(true);
         View.lossLabel.setVisible(true);
         View.b.setVisible(true);
+        View.highScoreLabel.setVisible(true);
     }
 }   
     
