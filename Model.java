@@ -31,14 +31,17 @@ public class Model
     // The game 'model' - these represent the state of the game
     // and are used by the View to display it
     GameObj ball;                // The ball
-    GameObj[] bricks;            // The bricks
-    GameObj bat;                 // The bat
-    int score = 0;               // The score
+    static GameObj[] bricks;            // The bricks
+    static GameObj bat;                 // The bat
+    static int score = 0;               // The score
+    
+    static boolean canCheckForLoss = false;
 
     // variables that control the game 
     String gameState = "running";// Set to "finished" to end the game
      boolean fast = false;        // Set true to make the ball go faster
-
+    static boolean canCheck = true;
+     
     // initialisation parameters for the model
     int width;                   // Width of game
     int height;                  // Height of game
@@ -149,15 +152,39 @@ public class Model
                 brick.visible = false;      // set the brick invisible
                 addToScore( HIT_BRICK );    // add to score for hitting a brick
             }
-        }    
+        }
+        
+        int count = 0;
+        if(canCheck){
+            for(GameObj brick: bricks){
+                if(brick.visible == false){
+                    count = count + 1;
+                }
+            }
+        }
+        if(count == bricks.length){
+            canCheck = false;
+            showWinScreen();
+            System.out.println("All blocks have been destroyed, You win");
+        }
 
         if (hit) {
             ball.changeDirectionY();
+            if(canCheckForLoss == false){
+                canCheckForLoss = true;
+            }
         }
         
         // check whether ball has hit the bat
         if ( ball.hitBy(bat) ) {
             ball.changeDirectionY();
+        }
+        
+        if(canCheck && canCheckForLoss){
+            if(score == 0 || score < 0){
+                canCheck = false;
+                showLossScreen();
+            }
         }
     }
 
@@ -236,6 +263,18 @@ public class Model
         int dist = direction * BAT_MOVE;    // Actual distance to move
         Debug.trace( "Model::moveBat: Move bat = " + dist );
         bat.moveX(dist);
+    }
+    
+    public synchronized void showWinScreen(){
+        View.r.setVisible(true);
+        View.l.setVisible(true);
+        View.b.setVisible(true);
+    }
+    
+    public synchronized void showLossScreen(){
+        View.lossPanel.setVisible(true);
+        View.lossLabel.setVisible(true);
+        View.b.setVisible(true);
     }
 }   
     

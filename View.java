@@ -5,6 +5,7 @@
 // We import lots of JavaFX libraries (we may not use them all, but it
 // saves us having to thinkabout them if we add new code)
 import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.scene.input.*;
 import javafx.scene.canvas.*;
 import javafx.scene.control.*;
@@ -23,6 +24,12 @@ public class View implements EventHandler<KeyEvent>{
     Pane pane;       // basic layout pane
     Canvas canvas;   // canvas to draw game on
     Label infoText;  // info at top of screen
+    static Rectangle r;
+    static Label l;
+    static Button b;
+    
+    static Rectangle lossPanel;
+    static Label lossLabel;
 
     // The other parts of the model-view-controller setup
     Controller controller;
@@ -64,7 +71,48 @@ public class View implements EventHandler<KeyEvent>{
         infoText.setTranslateX(50);  // these commands setthe position of the text box
         infoText.setTranslateY(10);  // (measuring from the top left corner)
         pane.getChildren().add(infoText);  // add label to the pane
-
+        
+        r = new Rectangle();
+        r.setX(0);
+        r.setY(0);
+        r.setWidth(width);
+        r.setHeight(height);
+        r.setVisible(false);
+        r.setFill(Color.GREEN);
+        pane.getChildren().add(r);
+        
+        l = new Label("You have won! Contratulations!");
+        l.setTranslateX(50);
+        l.setTranslateY(50);
+        l.setTextFill(Color.WHITE);
+        l.setVisible(false);
+        pane.getChildren().add(l);
+        
+        lossPanel = new Rectangle();
+        lossPanel.setX(0);
+        lossPanel.setY(0);
+        lossPanel.setWidth(width);
+        lossPanel.setHeight(height);
+        lossPanel.setVisible(false);
+        lossPanel.setFill(Color.RED);
+        pane.getChildren().add(lossPanel);
+        
+        lossLabel = new Label("You have lost! Oh no!");
+        lossLabel.setTranslateX(50);
+        lossLabel.setTranslateY(50);
+        lossLabel.setTextFill(Color.WHITE);
+        lossLabel.setVisible(false);
+        pane.getChildren().add(lossLabel);
+        
+        b = new Button();
+        b.setTranslateX(150);
+        b.setTranslateY(150);
+        b.setText("Replay");
+        b.setVisible(false);
+        b.setOnAction(this::restartGame);
+        pane.getChildren().add(b);
+        
+        
         // Make a new JavaFX Scene, containing the complete GUI
         Scene scene = new Scene(pane);   
         scene.getStylesheets().add("breakout.css"); // tell the app to use our css file
@@ -78,7 +126,23 @@ public class View implements EventHandler<KeyEvent>{
         window.setScene(scene);
         window.show();
     }
-
+    
+    public void restartGame(ActionEvent event){
+        System.out.println("Restart");
+        r.setVisible(false);
+        l.setVisible(false);
+        lossPanel.setVisible(false);
+        lossLabel.setVisible(false);
+        b.setVisible(false);
+        ball.topX = 250;
+        ball.topY = 250;
+        Model.score = 0;
+        Model.canCheck = true;
+        Model.canCheckForLoss = false;
+        for(GameObj brick : Model.bricks){
+            brick.visible = true;
+        }
+    }
     // Event handler for key presses - it just passes the event to the controller
     public void handle(KeyEvent event)
     {
